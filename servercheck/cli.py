@@ -14,7 +14,7 @@ LOG_FORMAT = '%(levelname)s %(asctime)s - %(message)s'
               help='Path of the config YAML file.')
 @click.option('--log_file', '-l', type=click.Path(),
               help='Logging file')
-@click.option('--daemon', '-d', is_flag=True,
+@click.option('--daemonize', '-d', is_flag=True,
               help='Run in daemon mode')
 @click.version_option(version=VERSION, prog_name=PROGNAME)
 def servercheck(cfg_file, log_file, daemonize):
