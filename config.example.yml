@@ -1,0 +1,20 @@
+server_name: MyServer
+check_period: 60
+checks:
+  gauges:
+    cpu:
+      threshold: 90
+      average_of: 10
+    memory:
+      threshold: 90
+      average_of: 10
+    storage:
+      threshold: 90
+      mount_point: /
+  services:
+  - docker
+  docker:
+  - mongo_mongo_1
+reporting:
+  slack:
+    incoming_webhook: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
