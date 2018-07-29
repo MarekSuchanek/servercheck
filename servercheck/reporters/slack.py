@@ -47,8 +47,8 @@ class SlackWebhookCommunicator:
 class SlackWebhookReporter(Reporter):
 
     def __init__(self, server_name, incoming_webhook):
-        self.communicator = SlackWebhookCommunicator(server_name,
-                                                     incoming_webhook)
+        self.communicator = SlackWebhookCommunicator(incoming_webhook,
+                                                     server_name)
 
     def feed(self, messages):
         for msg in messages:
