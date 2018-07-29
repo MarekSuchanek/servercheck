@@ -1,6 +1,6 @@
 server_name: MyServer
 check_period: 60
-checks:
+checkers:
   gauges:
     cpu:
       threshold: 90
@@ -15,6 +15,6 @@ checks:
   - docker
   docker:
   - mongo_mongo_1
-reporting:
+reporters:
   slack:
     incoming_webhook: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX

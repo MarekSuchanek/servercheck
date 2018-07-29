@@ -6,6 +6,8 @@ from .check import Check, CheckResult, MessageType
 
 class SystemService(Check):
 
+    origin = 'System service'
+
     states = {
         True: "running",
         False: "not running",
@@ -32,7 +34,7 @@ class SystemService(Check):
             self.status = is_service_running(self.service_name)
         except:
             self.status = None
-        return CheckResult(self.is_ok, self.name, *self.message)
+        return CheckResult(self.is_ok, self.origin, *self.message)
 
     @property
     def message(self):

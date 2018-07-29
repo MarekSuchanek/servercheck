@@ -16,11 +16,11 @@ class CheckResult:
     def __init__(self, ok, origin, message, message_type):
         self.ok = ok
         self.origin = origin
-        self._message = message
-        self._message_type = message_type
+        self.message = message
+        self.message_type = message_type
 
     def __str__(self):
-        return self._message
+        return self.message
 
 
 class MessageType(Enum):

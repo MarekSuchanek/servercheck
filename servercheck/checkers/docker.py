@@ -14,6 +14,8 @@ def container_states():
 
 class DockerContainer(Check):
 
+    origin = 'Docker'
+
     def __init__(self, container_name):
         self.container_name = container_name
         self.status = DockerContainerStatus.UNKNOWN
@@ -31,7 +33,7 @@ class DockerContainer(Check):
             )
         except:
             self.status = DockerContainerStatus.ERROR
-        return CheckResult(self.is_ok, self.name, *self.message)
+        return CheckResult(self.is_ok, self.origin, *self.message)
 
     @property
     def message(self):
