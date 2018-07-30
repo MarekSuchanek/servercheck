@@ -28,9 +28,8 @@ class DockerContainer(Check):
     def perform_check(self):
         try:
             states = container_states()
-            self.status = states.get(
-                self.container_name, DockerContainerStatus.UNKNOWN
-            )
+            state = states.get(self.container_name, 'unknown')
+            self.status = _string2status.get(state, DockerContainerStatus.UNKNOWN)
         except:
             self.status = DockerContainerStatus.ERROR
         return CheckResult(self.is_ok, self.origin, *self.message)
