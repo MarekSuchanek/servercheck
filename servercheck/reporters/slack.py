@@ -12,7 +12,8 @@ _msgtype2color = {
     MessageType.INFO: '#119b04',
     MessageType.WARNING: '#c40000',
     MessageType.ERROR: '#c400a3',
-    MessageType.FATAL: '#ffc700'
+    MessageType.FATAL: '#ffc700',
+    MessageType.GREAT_AGAIN: '#097200',
 }
 
 
@@ -58,8 +59,10 @@ class SlackWebhookReporter(Reporter):
                 pretext = '{} - warning'
             elif msg.message_type == MessageType.FATAL:
                 pretext = '{} - fatal error'
+            elif msg.message_type == MessageType.GREAT_AGAIN:
+                pretext = '{} - fixed'
             else:
-                continue
+                continue  # skipping others
             pretext = pretext.format(msg.origin)
             logging.getLogger().info(
                 'Sending to Slack({},{},{})'.format(pretext, msg.message, msg.message_type.name)

@@ -18,6 +18,7 @@ class DockerContainer(Check):
 
     def __init__(self, container_name):
         self.container_name = container_name
+        self.prev_status = DockerContainerStatus.UNKNOWN
         self.status = DockerContainerStatus.UNKNOWN
         super().__init__()
 
@@ -30,8 +31,16 @@ class DockerContainer(Check):
             states = container_states()
             state = states.get(self.container_name, 'unknown')
             self.status = _string2status.get(state, DockerContainerStatus.UNKNOWN)
-        except:
+        except Exception:
             self.status = DockerContainerStatus.ERROR
+        prev = self.prev_status
+        self.prev_status = self.status
+        if not prev == self.status and self.is_ok:  # fixed
+            return CheckResult(self.is_ok, self.origin,
+                               self.message[0], MessageType.GREAT_AGAIN)
+        if prev == self.status:  # still failing or still ok
+            return CheckResult(self.is_ok, self.origin,
+                               self.message[0], MessageType.INFO)
         return CheckResult(self.is_ok, self.origin, *self.message)
 
     @property

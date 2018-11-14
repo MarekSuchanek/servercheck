@@ -29,3 +29,4 @@ class MessageType(Enum):
     WARNING=2
     ERROR=3
     FATAL=4
+    GREAT_AGAIN=5

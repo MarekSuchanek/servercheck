@@ -12,6 +12,7 @@ class Gauge(Check):
 
     def __init__(self, threshold, average_of=1):
         self.threshold = threshold
+        self.in_danger = False
         self.series = deque(maxlen=average_of)
         super().__init__()
 
@@ -29,6 +30,14 @@ class Gauge(Check):
 
     def perform_check(self):
         self.series.append(self.measure())
+        if self.is_ok and self.in_danger:  # is fixed
+            self.in_danger = False
+            return CheckResult(self.in_danger, self.origin,
+                               self.message[0], MessageType.GREAT_AGAIN)
+        if self.in_danger:  # is still failing
+            return CheckResult(self.is_ok, self.origin,
+                               self.message[0], MessageType.INFO)
+        self.in_danger = self.is_ok
         return CheckResult(self.is_ok, self.origin, *self.message)
 
     def measure(self):
