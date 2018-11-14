@@ -50,6 +50,7 @@ class SlackWebhookReporter(Reporter):
     def __init__(self, server_name, incoming_webhook):
         self.communicator = SlackWebhookCommunicator(incoming_webhook,
                                                      server_name)
+        self.communicator.send(server_name + ' - notice', 'ServerCheck started...', MessageType.DEBUG)
 
     def feed(self, messages):
         for msg in messages:
