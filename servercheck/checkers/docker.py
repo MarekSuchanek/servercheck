@@ -18,7 +18,6 @@ class DockerContainer(Check):
 
     def __init__(self, container_name):
         self.container_name = container_name
-        self.prev_status = DockerContainerStatus.UNKNOWN
         self.status = DockerContainerStatus.UNKNOWN
         super().__init__()
 
@@ -33,15 +32,14 @@ class DockerContainer(Check):
             self.status = _string2status.get(state, DockerContainerStatus.UNKNOWN)
         except Exception:
             self.status = DockerContainerStatus.ERROR
-        prev = self.prev_status
-        self.prev_status = self.status
-        if not prev == self.status and self.is_ok:  # fixed
-            return CheckResult(self.is_ok, self.origin,
-                               self.message[0], MessageType.GREAT_AGAIN)
-        if prev == self.status:  # still failing or still ok
-            return CheckResult(self.is_ok, self.origin,
-                               self.message[0], MessageType.INFO)
-        return CheckResult(self.is_ok, self.origin, *self.message)
+
+        if self.became_fixed:
+            self.prev_ok = True
+            return self.make_result(self.message[0], MessageType.GREAT_AGAIN)
+        if self.became_broken:
+            self.prev_ok = False
+            return self.make_result(*self.message)
+        return self.make_result(self.message[0], MessageType.INFO)
 
     @property
     def message(self):

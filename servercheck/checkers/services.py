@@ -22,28 +22,26 @@ class SystemService(Check):
 
     def __init__(self, service_name):
         self.service_name = service_name
-        self.prev_status = None
         self.status = None
         super().__init__()
 
     @property
     def is_ok(self):
-        return self.status
+        return self.status is True
 
     def perform_check(self):
         try:
             self.status = is_service_running(self.service_name)
-        except:
+        except Exception:
             self.status = None
-        prev = self.prev_status
-        self.prev_status = self.status
-        if not prev == self.status and self.is_ok:  # fixed
-            return CheckResult(self.is_ok, self.origin,
-                               self.message[0], MessageType.GREAT_AGAIN)
-        if prev == self.status:  # still failing or still ok
-            return CheckResult(self.is_ok, self.origin,
-                               self.message[0], MessageType.INFO)
-        return CheckResult(self.is_ok, self.origin, *self.message)
+
+        if self.became_fixed:
+            self.prev_ok = True
+            return self.make_result(self.message[0], MessageType.GREAT_AGAIN)
+        if self.became_broken:
+            self.prev_ok = False
+            return self.make_result(*self.message)
+        return self.make_result(self.message[0], MessageType.INFO)
 
     @property
     def message(self):
