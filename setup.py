@@ -4,7 +4,7 @@ with open('README.md') as f:
     long_description = ''.join(f.readlines())
     setup(
         name='servercheck',
-        version='0.1',
+        version='0.2',
         keywords='server management healthcheck administration slack',
         description='Simple Python app to check health of (linux) server and its services',
         long_description=long_description,

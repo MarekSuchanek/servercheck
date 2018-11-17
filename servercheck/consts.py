@@ -1,4 +1,4 @@
 
 PROGNAME = "servercheck"
-VERSION = "v0.1"
+VERSION = "v0.2"
 FULLNAME = "{} {}".format(PROGNAME, VERSION)
