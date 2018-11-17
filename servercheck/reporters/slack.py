@@ -13,7 +13,7 @@ _msgtype2color = {
     MessageType.WARNING: '#c40000',
     MessageType.ERROR: '#c400a3',
     MessageType.FATAL: '#ffc700',
-    MessageType.GREAT_AGAIN: '#097200',
+    MessageType.FIXED: '#097200',
 }
 
 
@@ -60,7 +60,7 @@ class SlackWebhookReporter(Reporter):
                 pretext = '{} - warning'
             elif msg.message_type == MessageType.FATAL:
                 pretext = '{} - fatal error'
-            elif msg.message_type == MessageType.GREAT_AGAIN:
+            elif msg.message_type == MessageType.FIXED:
                 pretext = '{} - fixed'
             else:
                 continue  # skipping others

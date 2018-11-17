@@ -37,7 +37,7 @@ class SystemService(Check):
 
         if self.became_fixed:
             self.prev_ok = True
-            return self.make_result(self.message[0], MessageType.GREAT_AGAIN)
+            return self.make_result(self.message[0], MessageType.FIXED)
         if self.became_broken:
             self.prev_ok = False
             return self.make_result(*self.message)
