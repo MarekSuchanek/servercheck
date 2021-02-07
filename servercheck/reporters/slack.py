@@ -50,22 +50,26 @@ class SlackWebhookReporter(Reporter):
     def __init__(self, server_name, incoming_webhook):
         self.communicator = SlackWebhookCommunicator(incoming_webhook,
                                                      server_name)
-        self.communicator.send(server_name + ' - notice', 'ServerCheck started...', MessageType.DEBUG)
+        self.communicator.send(f'{server_name} - notice', 'ServerCheck started...', MessageType.DEBUG)
+
+    def startup(self, server_name):
+        pretext = f'Starting servercheck on "{server_name}"'
+        msg = 'Any suspicious behaviour will be reported to this Slack channel.'
+        self.communicator.send(pretext, msg, MessageType.INFO)
 
     def feed(self, messages):
         for msg in messages:
             if msg.message_type == MessageType.ERROR:
-                pretext = '{} - error'
+                pretext = f'{msg.origin} - error'
             elif msg.message_type == MessageType.WARNING:
-                pretext = '{} - warning'
+                pretext = f'{msg.origin} - warning'
             elif msg.message_type == MessageType.FATAL:
-                pretext = '{} - fatal error'
+                pretext = f'{msg.origin} - fatal error'
             elif msg.message_type == MessageType.FIXED:
-                pretext = '{} - fixed'
+                pretext = f'{msg.origin} - fixed'
             else:
                 continue  # skipping others
-            pretext = pretext.format(msg.origin)
             logging.getLogger().info(
-                'Sending to Slack({},{},{})'.format(pretext, msg.message, msg.message_type.name)
+                f'Sending to Slack({pretext},{msg.message},{msg.message_type.name})'
             )
             self.communicator.send(pretext, msg.message, msg.message_type)

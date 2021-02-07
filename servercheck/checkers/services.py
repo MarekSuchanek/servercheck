@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from .check import Check, CheckResult, MessageType
+from .check import Check, MessageType
 
 
 class SystemService(Check):
@@ -9,9 +9,9 @@ class SystemService(Check):
     origin = 'System service'
 
     states = {
-        True: "running",
-        False: "not running",
-        None: "unknown"
+        True: 'running',
+        False: 'not running',
+        None: 'unknown'
     }
 
     state2mgstype = {
@@ -45,15 +45,13 @@ class SystemService(Check):
 
     @property
     def message(self):
-        msg = "{} is {}".format(
-            self.name, self.states[self.status]
-        )
+        msg = f'{self.name} is {self.states[self.status]}'
         msg_type = self.state2mgstype[self.status]
         return msg, msg_type
 
     @property
     def name(self):
-        return "Service({})".format(self.service_name)
+        return f'Service({self.service_name})'
 
 
 def is_service_running(name):

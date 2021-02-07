@@ -27,6 +27,8 @@ class ServerCheckDaemon:
         self.reporters = []
 
     def run(self):
+        for reporter in self.reporters:
+            reporter.startup(self.server_name)
         while True:
             msgs = [c.perform_check() for c in self.checkers]
             for reporter in self.reporters:

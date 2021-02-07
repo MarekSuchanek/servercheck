@@ -1,7 +1,7 @@
 import psutil
 from collections import deque
 
-from .check import Check, CheckResult, MessageType
+from .check import Check, MessageType
 
 
 class Gauge(Check):
@@ -76,7 +76,7 @@ class StorageGauge(Gauge):
 
     @property
     def name(self):
-        return 'Storage({})'.format(self.mount_point)
+        return f'Storage({self.mount_point})'
 
     def measure(self):
         return psutil.disk_usage(self.mount_point).percent

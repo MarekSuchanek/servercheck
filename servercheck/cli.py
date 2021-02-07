@@ -9,6 +9,7 @@ from .consts import PROGNAME, VERSION
 
 LOG_FORMAT = '%(levelname)s %(asctime)s - %(message)s'
 
+
 @click.command()
 @click.option('--cfg_file', '-c', type=click.File('r'),
               help='Path of the config YAML file.')

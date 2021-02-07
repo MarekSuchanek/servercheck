@@ -2,7 +2,7 @@ import docker
 
 from enum import Enum
 
-from .check import Check, CheckResult, MessageType
+from .check import Check, MessageType
 
 
 docker_client = docker.from_env()
@@ -44,36 +44,30 @@ class DockerContainer(Check):
     @property
     def message(self):
         if DockerContainerStatus.ERROR:
-            msg = "{} - error occured while communicating with Docker".format(
-                self.name
-            )
+            msg = f'{self.name} - error occured while communicating with Docker'
         elif DockerContainerStatus.UNKNOWN:
-            msg = "{} cannot be determined".format(
-                self.name
-            )
+            msg = f'{self.name} cannot be determined'
         else:
-            msg = "{} is in state \"{}\"".format(
-                self.name, self.status.name
-            )
+            msg = f'{self.name} is in state "{self.status.name}"'
 
         msg_type = _status2msgtype.get(self.status, MessageType.WARNING)
         return msg, msg_type
 
     @property
     def name(self):
-        return "Docker({})".format(self.container_name)
+        return f'Docker({self.container_name})'
 
 
 class DockerContainerStatus(Enum):
-    CREATED=0
-    RESTARTING=1
-    RUNNING=2
-    REMOVING=3
-    PAUSED=4
-    EXITED=5
-    DEAD=6
-    UNKNOWN=7
-    ERROR=8
+    CREATED = 0
+    RESTARTING = 1
+    RUNNING = 2
+    REMOVING = 3
+    PAUSED = 4
+    EXITED = 5
+    DEAD = 6
+    UNKNOWN = 7
+    ERROR = 8
 
 
 _string2status = {
