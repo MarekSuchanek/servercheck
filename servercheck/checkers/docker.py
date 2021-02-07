@@ -5,10 +5,8 @@ from enum import Enum
 from .check import Check, MessageType
 
 
-docker_client = docker.from_env()
-
-
 def container_states():
+    docker_client = docker.from_env()
     return {c.name: c.status for c in docker_client.containers.list()}
 
 
